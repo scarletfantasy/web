@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.repo.userRepo;
+import com.example.demo.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +18,33 @@ public class jpaLogin {
     @Autowired
     userRepo userrepo;
 
+    @Autowired
+    userDao userdao;
+
+    @RequestMapping(value="/jpatest")
+    public Object test(HttpServletResponse response, HttpServletRequest request, HttpSession session)
+    {
+        List<User> alluser=userdao.getalluser();
+        for(User user:alluser)
+        {
+            if(user.getId().equals("user4"))
+            {
+                user.setPassword("abcd");
+                userdao.edituser(user);
+            }
+
+        }
+
+
+        return 0;
+    }
+
     @RequestMapping(value="/jpalogin")
     public Object login(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
         String lid=request.getParameter("id");
         String lpassword=request.getParameter("password");
-        List<User> alluser=userrepo.getAllUser();
+        List<User> alluser=userdao.getalluser();
         response.setHeader("Access-Control-Allow-Origin", "*");
         session.setAttribute("id"," ");
         for(User user:alluser)
@@ -48,15 +70,14 @@ public class jpaLogin {
         String password=request.getParameter("password");
         System.out.println("success\n");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        List<User> alluser=userrepo.getAllUser();
-        for(User user:alluser)
+        if(userdao.getuserbyid(id).isPresent())
         {
-            if(user.getId().equals(id))
-            {
-                return "same id please change it";
-            }
+            return "fail";
         }
-        userrepo.insertUser(id,password,email);
+
+        User newuser=new User(id,password,email);
+
+        userdao.edituser(newuser);
 
         return "success";
     }
