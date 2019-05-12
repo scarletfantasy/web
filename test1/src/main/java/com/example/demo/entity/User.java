@@ -15,8 +15,34 @@ public class User {
     {
         return this.password;
     }
+    public void setPassword(String pass)
+    {
+        this.password=pass;
+    }
     public String getId()
     {
         return this.id;
+    }
+    public void setId(String id)
+    {
+        this.id=id;
+    }
+    public String getEmail()
+    {
+        return this.email;
+    }
+    public void setEmail(String email)
+    {
+        this.email=email;
+    }
+    public User(String tid,String tpassword,String temail)
+    {
+        id=tid;
+        password=tpassword;
+        email=temail;
+    }
+    public User()
+    {
+
     }
 }

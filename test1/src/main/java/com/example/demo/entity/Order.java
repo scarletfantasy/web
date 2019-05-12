@@ -7,17 +7,19 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import  javax.persistence.*;
 
 @Entity
-@Table(name="history")
+@Table(name="userorder")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class History {
+public class Order {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private String time,userid,isbn;
-    private double price;
+    private String time;
     private int number;
-
+    @OneToOne
+    private Book book;
+    @OneToOne
+    private User user;
     public Long getid()
     {
         return id;
@@ -26,36 +28,28 @@ public class History {
     {
         return number;
     }
-    public double getprice()
-    {
-        return price;
-    }
     public String gettime()
     {
         return time;
     }
-    public String getuserid()
-    {
-        return userid;
-    }
-    public String getisbn()
-    {
-        return isbn;
-    }
-
-
-    public History()
+    public Book getbook(){return book;}
+    public User getuser(){return user;}
+    public Order()
     {
 
     }
-    public History(String time,String userid,String isbn,int number,double price)
+    public Order(String time,int number,Book book,User user)
     {
-
         this.time=time;
-        this.isbn=isbn;
-        this.price=price;
         this.number=number;
-        this.userid=userid;
+        this.book=book;
+        this.user=user;
     }
+    public History o2h()
+    {
+        History history =new History(this.time,this.user.getId(),this.book.getisbn(),this.number,this.book.getprice());
+        return history;
+    }
+
 
 }

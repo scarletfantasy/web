@@ -1,5 +1,5 @@
 package com.example.demo.controller;
-
+import com.example.demo.dao.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Book;
@@ -17,12 +17,14 @@ import java.util.*;
 public class jpaBooklist {
     @Autowired
     bookRepo bookrepo;
+    @Autowired
+    bookDao bookdao;
     @RequestMapping(value="/jpabooklist")
     public Object booklist(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
 
 
-        List<Book> books=bookrepo.getAllBook();
+        List<Book> books=bookdao.getallbook();
         response.setHeader("Access-Control-Allow-Origin", "*");
         return books;
     }
@@ -37,15 +39,23 @@ public class jpaBooklist {
         String bookimg=jsonobeject.getString("bookimg");
         double price=jsonobeject.getDouble("price");
         int number=jsonobeject.getInteger("number");
-        bookrepo.updateBook(isbn,bookimg,bookname,number,price);
+        Book book=new Book();
+        book.setisbn(isbn);
+        book.setbookimg(bookimg);
+        book.setbookname(bookname);
+        book.setnumber(number);
+        book.setprice(price);
+        bookdao.editbook(book);
+
         response.setHeader("Access-Control-Allow-Origin", "*");
         return 0;
     }
-    @RequestMapping(value = "jpaeditdelete")
+    @RequestMapping(value = "/jpaeditdelete")
     public Object editdelete(HttpServletRequest request,HttpServletResponse response, HttpSession session)
     {
         String isbn=request.getParameter("isbn");
-        bookrepo.deleteBook(isbn);
+        System.out.println(isbn);
+        bookdao.deletbookbyisbn(isbn);
         return 0;
     }
 
