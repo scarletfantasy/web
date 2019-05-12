@@ -9,8 +9,7 @@ public class User {
     private String id;
     private String password;
     private String email;
-    /*@OneToMany
-    private List<History> history;*/
+    private String role;
     public String getPassword()
     {
         return this.password;
@@ -35,12 +34,24 @@ public class User {
     {
         this.email=email;
     }
+    public void setRole(String role){this.role=role;}
+    public String getRole(){return this.role;}
     public User(String tid,String tpassword,String temail)
     {
         id=tid;
         password=tpassword;
         email=temail;
+        role="USER";
     }
+    public User(String tid,String tpassword,String temail,String trole)
+    {
+        id=tid;
+        password=tpassword;
+        email=temail;
+        role=trole;
+    }
+
+
     public User()
     {
 

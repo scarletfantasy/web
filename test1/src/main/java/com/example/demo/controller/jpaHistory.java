@@ -52,11 +52,12 @@ public class jpaHistory {
 
     }
     @RequestMapping(value="/jpaaddtocart")
-    public Object addtocart(HttpServletResponse response, HttpServletRequest request, HttpSession session)
+    public Object addtocart(HttpServletResponse response, HttpServletRequest request)
     {
-
+        HttpSession session=request.getSession();
         String id=(String)session.getAttribute("id");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         if(id==null)
         {
             return "login";
@@ -83,7 +84,8 @@ public class jpaHistory {
 
         String result="success";
         String id=(String)session.getAttribute("id");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         if(id==null)
         {
             return "login";
@@ -113,7 +115,8 @@ public class jpaHistory {
     public Object showcart(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
         String id=(String)session.getAttribute("id");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         if(id==null)
         {
             return "login";
@@ -127,7 +130,8 @@ public class jpaHistory {
     public Object showhistory(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
         String id=(String)session.getAttribute("id");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         if(id==null)
         {
             return "login";
@@ -141,7 +145,8 @@ public class jpaHistory {
     public Object deleteorder(HttpServletResponse response, HttpServletRequest request)
         {
         String id=request.getParameter("id");
-            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Credentials","true");
+            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
             if(id==null)
             {
                 return "login";

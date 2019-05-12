@@ -25,7 +25,8 @@ public class jpaBooklist {
 
 
         List<Book> books=bookdao.getallbook();
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         return books;
     }
     @RequestMapping(value="/jpaeditsave")
@@ -47,7 +48,8 @@ public class jpaBooklist {
         book.setprice(price);
         bookdao.editbook(book);
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         return 0;
     }
     @RequestMapping(value = "/jpaeditdelete")

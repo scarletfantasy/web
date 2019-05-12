@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.User;
 import com.example.demo.repo.userRepo;
 import com.example.demo.dao.*;
@@ -40,12 +42,16 @@ public class jpaLogin {
     }
 
     @RequestMapping(value="/jpalogin")
-    public Object login(HttpServletResponse response, HttpServletRequest request, HttpSession session)
+    public Object login(HttpServletResponse response, HttpServletRequest request)
     {
         String lid=request.getParameter("id");
         String lpassword=request.getParameter("password");
+        HttpSession session=request.getSession();
         List<User> alluser=userdao.getalluser();
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        System.out.println(lid);
+        System.out.println(lpassword);
         session.setAttribute("id"," ");
         for(User user:alluser)
         {
@@ -69,7 +75,8 @@ public class jpaLogin {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
         System.out.println("success\n");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         if(userdao.getuserbyid(id).isPresent())
         {
             return "fail";
@@ -85,8 +92,32 @@ public class jpaLogin {
     @RequestMapping(value = "/jpalogout")
     public Object logout(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         session.removeAttribute("id");
         return "success";
+    }
+    @RequestMapping(value = "/jpashowuser")
+    public Object showalluser(HttpServletResponse response, HttpServletRequest request, HttpSession session)
+    {
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
+        return userdao.getalluser();
+    }
+    @RequestMapping(value = "/jpauseredit")
+    public Object useredit(HttpServletResponse response, HttpServletRequest request, HttpSession session)
+    {
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        String json=request.getParameter("user");
+        JSONObject jsonobeject= JSON.parseObject(json);
+        String id=jsonobeject.getString("id");
+        String role=jsonobeject.getString("role");
+        String password=jsonobeject.getString("password");
+        String email=jsonobeject.getString("email");
+        User user=new User(id,password,email,role);
+        userdao.edituser(user);
+        return 0;
     }
 }
