@@ -19,6 +19,6 @@ public class unauthorized implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
 
 
-        httpServletResponse.getWriter().write("notlogin");
+        httpServletResponse.getWriter().write("not log in");
     }
 }

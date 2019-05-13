@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.userDao;
 import com.example.demo.entity.User;
-import com.example.demo.repo.userRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
