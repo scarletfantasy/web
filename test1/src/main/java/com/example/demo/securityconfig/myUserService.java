@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.securityconfig;
 
 import com.example.demo.dao.userDao;
 import com.example.demo.entity.User;

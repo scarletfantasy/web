@@ -20,6 +20,7 @@ public class corsFilter implements Filter {
     {
         HttpServletRequest request=(HttpServletRequest) req;
         HttpServletResponse response=(HttpServletResponse) resp;
+        response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         chain.doFilter(request,response);
