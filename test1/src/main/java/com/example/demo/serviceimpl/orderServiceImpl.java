@@ -81,6 +81,10 @@ public class orderServiceImpl implements orderService {
         {
             return "login";
         }
+        if(id.equals("admin"))
+        {
+            return historydao.getallhistory();
+        }
         List<History> cart=historydao.gethistorybyid(id);
         System.out.println("success");
         return cart;
