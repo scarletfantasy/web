@@ -1,0 +1,9 @@
+#alldirect{height:35px;background-color: blue;opacity: 0.7}
+#direct{float: left;float: left;text-align: center;text-decoration: none;color: white;font-size: 20px}
+#logindirect{float: right;background-color: white;text-align: center;width:200px}
+#ebook{float: left;height: 35px;width: 200px;color:red;font-size: 25px}
+#direct:hover{float: left;text-align: center;text-decoration: none;color: green}
+#icon{width: 35px;height: 35px;float:left}
+#direct1{width: 190px;height: 35px;float:left}
+#directbutton{font-size: 15px;color: white;}
+#slink{text-decoration: none;}
