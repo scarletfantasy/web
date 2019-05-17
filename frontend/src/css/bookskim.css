@@ -1,0 +1,4 @@
+#skimimg {width: 50px;height:50px;float:left}
+#bookskim{background-color: white;outline-style: ridge;height: 100px;margin-top: 10px;opacity: 0.7;margin: 50px}
+#skimtext{display: table-cell;width: 300px;height:100px;float:left;text-align: center;margin-top: 30px}
+

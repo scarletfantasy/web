@@ -1,11 +1,24 @@
 # web
+
 web for se228
+
 ---
-# the description of project
+
+## the description of project
+
 + entity
 + repo
 + dao
++ daoimpl
++ securityconfig
++ service
++ serviceimpl
++ handler
++ authen
 + controller
+  
 ---
-the static web are stored in static directory
 
+## static resource
+
+the static web are stored in static directory such as images
