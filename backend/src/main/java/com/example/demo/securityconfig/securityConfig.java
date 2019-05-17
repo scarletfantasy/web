@@ -1,8 +1,9 @@
 package com.example.demo.securityconfig;
 
-import com.example.demo.handler.failHandler;
-import com.example.demo.handler.successHandler;
 import com.example.demo.entrypoint.unauthorized;
+import com.example.demo.handler.failHandler;
+import com.example.demo.handler.logoutsuccesshandler;
+import com.example.demo.handler.successHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     failHandler fhandler;
     @Autowired
     unauthorized unauthorize;
+    @Autowired
+    logoutsuccesshandler lshandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -27,7 +30,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorize)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/jpalogin","/sslogin","/jpabooklist","/jparegister","/img/*").permitAll()
+                .antMatchers("/jpalogin","/sslogin","/jpabooklist","/jparegister","/img/*","/jpacurrentuser").permitAll()
                 .antMatchers("/jpashowcart","/jpacleancart","/jpaaddtocart","/jpashowhistory","/jpadeleteorder").hasAnyAuthority("USER","ADMIN")
                 .antMatchers("/jpaeditsave","/jpaeditdelete","/jpashowuser").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
@@ -41,7 +44,10 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessHandler(lshandler)
+                .invalidateHttpSession(true);
+
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

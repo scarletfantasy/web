@@ -122,4 +122,15 @@ public class UserController {
         userdao.edituser(user);
         return 0;
     }
+    @RequestMapping(value="/jpacurrentuser")
+    public Object currentuser(HttpServletRequest request)
+    {
+        System.out.println("success");
+        if(request.getSession().getAttribute("id")==null)
+        {
+            return " ";
+        }
+        return request.getSession().getAttribute("id");
+    }
+
 }

@@ -23,11 +23,25 @@ class Ordermanagement extends Component
     constructor(props)
     {
         super(props);
-        this.state={isfinish:false,cart:[],from:"2000-01-01",to:"2099-12-31"}
+        this.state={user:" ",cart:[],from:"2000-01-01",to:"2099-12-31",book:"",userid:""}
         this.handlechange=this.handlechange.bind(this)
         this.handlefrom=this.handlefrom.bind(this)
         this.handleto=this.handleto.bind(this)
-
+        this.handleuser=this.handleuser.bind(this)
+        this.handlebook=this.handlebook.bind(this)
+        $.ajax({
+            url: "http://localhost:8080/jpacurrentuser",
+            type:"POST",
+            params:{"contentType": "application/json;charset=utf-8"},
+            xhrFields: {
+              withCredentials: true
+          },
+            success: function f(data) {
+              
+              this.setState({user:data});
+              
+            }.bind(this)
+          })
     }
     handlefrom(e)
     {
@@ -37,6 +51,14 @@ class Ordermanagement extends Component
     {
         console.log(e.target.value)
         this.setState({to:e.target.value})
+    }
+    handlebook(e)
+    {
+        this.setState({book:e.target.value})
+    }
+    handleuser(e)
+    {
+        this.setState({userid:e.target.value})
     }
     componentDidMount()
     {
@@ -91,19 +113,36 @@ class Ordermanagement extends Component
         var count=0;
         var bookcount=0;
         var cost=0;
+        var userid=this.state.userid;
+        var book=this.state.book;
         for(var i=0;i<tmp.length;++i)
         {
             var time=new Date(tmp[i].time)
-            if(ftime<time&&time<ttime)
+            if(ftime<time&&time<ttime&&(book==""||tmp[i].isbn.search(book)!=-1)&&(userid==""||tmp[i].userid.search(userid)!=-1))
             {
-                item.push(
-                    <TableRow>
-                        <TableCell>{tmp[i].id}</TableCell>
-                        <TableCell>{tmp[i].isbn}</TableCell>
-                        <TableCell>{tmp[i].time}</TableCell>
-                        <TableCell>{tmp[i].number}</TableCell>
-                    </TableRow>
-                )
+                if(this.state.user!="admin")
+                {
+                    item.push(
+                        <TableRow>
+                            <TableCell>{tmp[i].id}</TableCell>
+                            <TableCell>{tmp[i].isbn}</TableCell>
+                            <TableCell>{tmp[i].time}</TableCell>
+                            <TableCell>{tmp[i].number}</TableCell>
+                        </TableRow>
+                    )
+                }
+                else{
+                    item.push(
+                        <TableRow>
+                            <TableCell>{tmp[i].id}</TableCell>
+                            <TableCell>{tmp[i].isbn}</TableCell>
+                            <TableCell>{tmp[i].time}</TableCell>
+                            <TableCell>{tmp[i].number}</TableCell>
+                            <TableCell>{tmp[i].userid}</TableCell>
+                        </TableRow>
+                    )
+                }
+                
                 ++count;
                 bookcount=bookcount+tmp[i].number
                 cost=cost+tmp[i].number*tmp[i].price
@@ -112,7 +151,7 @@ class Ordermanagement extends Component
             
         }
         cost = cost.toFixed(2);
-        if(!this.state.isfinish)
+        if(this.state.user!="admin")
         {
             return(
                 <div>
@@ -148,7 +187,44 @@ class Ordermanagement extends Component
         }
         else{
             return(
-                <Redirect to={{pathname:'/',query:{book:this.state.book,shoppingcar:[]}}}></Redirect>
+                <div>
+                    <Paper id="select">
+                    <div>
+                    
+                    
+                    <FormControl margin="normal" required fullWidth>
+                    <InputLabel htmlFor="from">from</InputLabel>
+                    <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                    <InputLabel htmlFor="to">to</InputLabel>
+                    <Input value={this.state.to} onChange={this.handleto}>to</Input>
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                    <InputLabel htmlFor="to">book</InputLabel>
+                    <Input value={this.state.book} onChange={this.handlebook}>book</Input>
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                    <InputLabel htmlFor="to">userid</InputLabel>
+                    <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
+                    </FormControl>
+                    <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
+                    
+                </div>
+                
+                <Table>
+                    <TableHead>
+                        <TableCell>id</TableCell>
+                        <TableCell>isbn</TableCell>
+                        <TableCell>time</TableCell>
+                        <TableCell>number</TableCell>
+                        <TableCell>user</TableCell>
+                    </TableHead>
+                    {item}
+                </Table>
+                </Paper>
+                
+                </div>
                 )
         }
         

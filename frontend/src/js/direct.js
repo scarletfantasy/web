@@ -27,26 +27,22 @@ class Direct extends Component
     }
     componentWillReceiveProps(nextprop)
     {
-      var tmp=nextprop.location.query||"";
+      $.ajax({
+        url: "http://localhost:8080/jpacurrentuser",
+        type:"POST",
+        params:{"contentType": "application/json;charset=utf-8"},
+        xhrFields: {
+          withCredentials: true
+      },
+        success: function f(data) {
+          
+          this.setState({user:{id:data}});
+
+        }.bind(this)
+      })
       
-      var id=tmp.id||this.state.user.id;
-      console.log(id);
-      /*var order=tmp.order||"";
       
-      var shoppingcar=tmp.shoppingcar||this.state.shoppingcar;
       
-      if(order!="")
-      {
-        
-        shoppingcar.push(order);
-        
-      }
-      if(id==" ")
-      {
-        shoppingcar=[];
-      }*/
-      
-      this.setState({user:{id:id}});
       
     }
     handleClick = event => {
@@ -59,10 +55,13 @@ class Direct extends Component
     
     logout()
     {
-      this.setState({user:{id:""}});
+      this.setState({user:{id:" "}});
       $.ajax({
-        url: "http://localhost:8080/jpalogout",
+        url: "http://localhost:8080/logout",
         type:"POST",
+        xhrFields: {
+          withCredentials: true
+      },
         params:{"contentType": "application/json;charset=utf-8"},
         
         success: function f(data) {
@@ -74,82 +73,134 @@ class Direct extends Component
     render()
     {
       
-      var tmp=this.state.user;
+      var user=this.state.user;
       var shoppingcar=this.state.shoppingcar;
       const  anchorEl  = this.state.anchorEl;
-     /*<div id="direct1">
-              <img id="icon" src="img/login.png"></img>
-              <Link id="direct" to={{pathname:'/login'}}>login</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/login.png"></img>
-              <Link id="direct" to={{pathname:'/register'}}>register</Link>
-              </div>             
-              <div id="direct1">
-              <Button id="directbutton" onClick={this.logout}>logout</Button>
-              </div>*/ 
+     if(user.id=="admin")
+     {
       return(
             
             
             
-            <div id="alldirect">
-            <AppBar id="alldirect">            
-            <div>
-              <div id="direct1">
-              <img id="icon" src="img/skim.png"></img>
-              <Link id="direct" to={{pathname:'/bookskim'}} >skim</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/home.png"></img>
-              <Link id="direct" to={{pathname:'/'}}>home</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/cart.png"></img>
-              <Link id="direct" to={{pathname:'/shoppingcar'}}>cart</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/edit.png"></img>
-              <Link id="direct" to={{pathname:'/edit'}}>edit</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/order.png"></img>
-              <Link id="direct" to={{pathname:'/ordermanagement',}}>order</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/order.png"></img>
-              <Link id="direct" to={{pathname:'/usermanagement',}}>super</Link>
-              </div>
-              <div id="direct1">
-              <img id="icon" src="img/guest.png"></img>
-              <div id="direct">{tmp.id}</div> 
-              </div>
-              
-        <div id="direct1">
-        <Button id="directbutton"
-          aria-owns={anchorEl ? 'simple-menu' : undefined}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
-          user
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-        >
-          <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/login'}}>login</Link></MenuItem>
-          <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/register'}}>register</Link></MenuItem>
-          <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/logout'}}>logout</Link></MenuItem>
-        </Menu>
+        <div id="alldirect">
+        <AppBar id="alldirect">            
+        <div>
+          <div id="direct1">
+          <img id="icon" src="img/skim.png"></img>
+          <Link id="direct" to={{pathname:'/bookskim'}} >skim</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/home.png"></img>
+          <Link id="direct" to={{pathname:'/'}}>home</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/cart.png"></img>
+          <Link id="direct" to={{pathname:'/shoppingcar'}}>cart</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/edit.png"></img>
+          <Link id="direct" to={{pathname:'/edit'}}>edit</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/order.png"></img>
+          <Link id="direct" to={{pathname:'/ordermanagement',}}>order</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/order.png"></img>
+          <Link id="direct" to={{pathname:'/usermanagement',}}>super</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/guest.png"></img>
+          <div id="direct">{user.id}</div> 
+          </div>        
+          <div id="direct1">
+            <Button id="directbutton"
+              aria-owns={anchorEl ? 'simple-menu' : undefined}
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            >
+            user
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleClose}
+            >
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/login'}}>login</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/register'}}>register</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/logout'}}>logout</Link></MenuItem>
+            </Menu>
+          </div>
+          
         </div>
-              
-            </div>
+        
+        </AppBar>
+        </div>
+        
+    )
+    }
+    else
+    {
+      return(
             
-            </AppBar>
-            </div>
             
-        )
+            
+        <div id="alldirect">
+        <AppBar id="alldirect">            
+        <div>
+          <div id="direct1">
+          <img id="icon" src="img/skim.png"></img>
+          <Link id="direct" to={{pathname:'/bookskim'}} >skim</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/home.png"></img>
+          <Link id="direct" to={{pathname:'/'}}>home</Link>
+          </div>
+          <div id="direct1">
+          <img id="icon" src="img/cart.png"></img>
+          <Link id="direct" to={{pathname:'/shoppingcar'}}>cart</Link>
+          </div>
+          
+          
+          <div id="direct1">
+          <img id="icon" src="img/order.png"></img>
+          <Link id="direct" to={{pathname:'/ordermanagement',}}>order</Link>
+          </div>
+          
+          <div id="direct1">
+          <img id="icon" src="img/guest.png"></img>
+          <div id="direct">{user.id}</div> 
+          </div>        
+          <div id="direct1">
+            <Button id="directbutton"
+              aria-owns={anchorEl ? 'simple-menu' : undefined}
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            >
+            user
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleClose}
+            >
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/login'}}>login</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/register'}}>register</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/logout'}}>logout</Link></MenuItem>
+            </Menu>
+          </div>
+          
+        </div>
+        
+        </AppBar>
+        </div>
+        
+    )
+    }
+
+     
     }
 }
 export default withRouter(Direct);
