@@ -172,23 +172,7 @@ class Bookskim extends Component {
           success: function f(data) {
             
             console.log(data);  
-            /*var book=new Array();
-              
-              
-            for(var i=0;i<data.length;++i)
-            {
-              var bookname=data[i].bookname;
-              var isbn=data[i].isbn;
-              var number=data[i].number;
-              var price=data[i].price;
-              var bookimg=data[i].bookimg;
-              var map={bookname:bookname,isbn:isbn,number:number,price:price,bookimg:bookimg};
-              book.push(map);
-            }*/
-            
-            
             this.setState({book:data});
-            
             
           }.bind(this)
       })
