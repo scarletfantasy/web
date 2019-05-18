@@ -65,6 +65,7 @@ class Ordermanagement extends Component
             var ttime=new Date(to)
             var userid=this.state.userid;
             var book=this.state.book;
+            var users=new Map();
             for(var i=0;i<cart.length;++i)
             {
                 
@@ -93,6 +94,41 @@ class Ordermanagement extends Component
                     name: '销量',
                     type: 'bar',
                     data: Array.from(books.values())
+                }]
+            });
+            var myChart1 = echarts.init(document.getElementById('user'));
+            for(var i=0;i<cart.length;++i)
+            {
+                
+                var time=new Date(cart[i].time)
+                if(ftime<time&&time<ttime&&(book==""||cart[i].isbn.search(book)!=-1)&&(userid==""||cart[i].userid.search(userid)!=-1))
+                {
+                    
+                    if(users.get(cart[i].userid)!=null)
+                    {
+                        users.set(cart[i].userid,users.get(cart[i].userid)+cart[i].number*cart[i].price)
+                    }
+                    else{
+                        users.set(cart[i].userid,cart[i].number*cart[i].price)
+                    }
+                    
+                }
+                
+            }
+            for (var key of users.keys()) {
+                users.set(key,users.get(key).toFixed(2))
+              }
+            myChart1.setOption({
+                title: { text: '各用户花费展示' },
+                tooltip: {},
+                xAxis: {
+                    data: Array.from(users.keys())
+                },
+                yAxis: {},
+                series: [{
+                    name: '话费',
+                    type: 'bar',
+                    data: Array.from(users.values())
                 }]
             });
         }
@@ -311,6 +347,7 @@ class Ordermanagement extends Component
                             </div>
                             <Button onClick={this.changeshow}>changeshow</Button>
                             <div id="chart" style={{ width: 400, height: 400 }}></div>
+                            <div id="user" style={{ width: 400, height: 400 ,float:"left"}}></div>
                         </Paper>                
                     </div>
                     )

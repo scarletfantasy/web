@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="book")
@@ -12,6 +13,7 @@ public class Book {
     private String bookimg;
     private  double price;
     private int number;
+
     public  String getisbn()
     {
         return isbn;
@@ -34,6 +36,7 @@ public class Book {
     {
         return number;
     }
+
     public  void setisbn(String isbn)
     {
         this.isbn=isbn;

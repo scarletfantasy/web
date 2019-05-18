@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 @Entity
 @Table(name="user")
 public class User {
@@ -42,6 +43,7 @@ public class User {
         password=tpassword;
         email=temail;
         role="USER";
+
     }
     public User(String tid,String tpassword,String temail,String trole)
     {

@@ -32,6 +32,7 @@ public class bookServiceImpl implements bookService {
         book.setbookname(bookname);
         book.setnumber(number);
         book.setprice(price);
+
         bookdao.editbook(book);
 
 
