@@ -104,15 +104,45 @@ class Edit extends Component {
         var i = e.target.id;
         var book = this.state.book[i];
         var tmp = JSON.stringify(book);
-        console.log(tmp);
+        var id="#"+i+"img"
+        
+        var formdata=new FormData();
+        
+        
+        var filedata=$(id)[0].files[0]
+        console.log(filedata)
+        if(filedata!=undefined&&filedata.size>100000)
+        {
+            alert("the file is too big")
+        }
+        else if(filedata!=undefined)
+        {
+            formdata.append("img",$(id)[0].files[0]);
+            formdata.append("isbn",book.isbn);
+            formdata.append("houzhui",$(id)[0].value.split(".")[1])
+            console.log("enter")
+        
+            $.ajax({
+                url:"http://localhost:8080/uploadimg",
+                type:"POST",
+                data:formdata,
+                processData:false,
+                contentType:false,
+                xhrFields:{withCredentials:true},
+                success: function f(data) {
+
+                    alert(data);
 
 
+                }
+            })
+        }
+        
         $.ajax({
             url: "http://localhost:8080/jpaeditsave",
             type: "GET",
-            params: {
-                "contentType": "application/json;charset=utf-8"
-            },
+            
+            
             xhrFields: {
                 withCredentials: true
             },
@@ -126,6 +156,8 @@ class Edit extends Component {
 
             }
         })
+        
+        
 
     }
     handlechange(e) {
@@ -163,116 +195,57 @@ class Edit extends Component {
         var item = [];
         for (var i = 0; i < book.length; ++i) {
             if (searchname == "" || book[i].bookname.search(searchname) != -1) {
-                item.push( < TableRow >
-                    <
-                    TableCell > < Input id = {
-                        i + ".bookname"
-                    }
-                    value = {
-                        book[i].bookname
-                    }
-                    onChange = {
-                        this.handlechange
-                    }
-                    /></TableCell >
-                    <
-                    TableCell > < Input id = {
-                        i + ".isbn"
-                    }
-                    value = {
-                        book[i].isbn
-                    }
-                    onChange = {
-                        this.handlechange
-                    }
-                    /></TableCell >
-                    <
-                    TableCell > < Input id = {
-                        i + ".number"
-                    }
-                    value = {
-                        book[i].number
-                    }
-                    onChange = {
-                        this.handlechange
-                    }
-                    /></TableCell >
-                    <
-                    TableCell > < Input id = {
-                        i + ".bookimg"
-                    }
-                    value = {
-                        book[i].bookimg
-                    }
-                    onChange = {
-                        this.handlechange
-                    }
-                    /></TableCell >
-                    <
-                    TableCell > < Input id = {
-                        i + ".price"
-                    }
-                    value = {
-                        book[i].price
-                    }
-                    onChange = {
-                        this.handlechange
-                    }
-                    /></TableCell >
-                    <
-                    TableCell > < button id = {
-                        i
-                    }
-                    onClick = {
-                        this.handlesave
-                    } > save < /button></TableCell >
-                    <
-                    TableCell > < button id = {
-                        i
-                    }
-                    onClick = {
-                        this.handledelete
-                    } > delete < /button></TableCell >
-
-                    <
-                    /TableRow>)
+                item.push( 
+                < TableRow >
+                    < TableCell > 
+                        < Input id = {i + ".bookname"}value = {book[i].bookname} onChange = {this.handlechange}/>
+                    </TableCell >
+                    <TableCell > 
+                        < Input id = { i + ".isbn"} value = {book[i].isbn} onChange = {this.handlechange }/>
+                    </TableCell >
+                    <TableCell > 
+                        < Input id = { i + ".number"} value = {book[i].number } onChange = { this.handlechange}/>
+                    </TableCell >
+                    <TableCell > < img id = "skimimg" src={book[i].bookimg}/>
+                    </TableCell >
+                    < TableCell > 
+                    < Input id = {i + ".price"}value = {book[i].price } onChange = {this.handlechange}/>
+                    </TableCell >
+                    <TableCell > 
+                    <input type="file" id = {i+"img"} name={i+"img"}></input>
+                    </TableCell >
+                    < TableCell > < button id = { i}onClick = { this.handlesave} > save </button>
+                    </TableCell >
+                    <TableCell > < button id = {i}onClick = { this.handledelete} > delete </button>
+                    </TableCell >
+                    </TableRow>)
                 }
 
 
             }
-            return ( <
-                div id = "skimpage" >
-                <
-                Paper >
-                <
-                Input value = {
-                    this.state.searchname
-                }
-                onChange = {
-                    this.searchchange
-                } > < /Input> <
-                br / >
-                <
-                Button onClick = {
-                    this.newbook
-                } > new < /Button> <
-                Table >
-                <
-                TableHead >
-                <
-                TableCell > bookname < /TableCell> <
-                TableCell > isbn < /TableCell> <
-                TableCell > number < /TableCell> <
-                TableCell > img < /TableCell> <
-                TableCell > price < /TableCell> <
-                TableCell > save < /TableCell> <
-                TableCell > delete < /TableCell> < /
-                TableHead > {
-                    item
-                } <
-                /Table> < /
-                Paper > <
-                /div>
+            return ( 
+                <div id = "skimpage">                
+                <Paper>
+                
+                <Input value = {this.state.searchname} onChange = { this.searchchange } > </Input> 
+                <br/>
+                <Button onClick = { this.newbook} > new </Button> 
+                <Table >
+                
+                <TableHead >
+                <TableCell > bookname </TableCell> 
+                <TableCell > isbn </TableCell> 
+                <TableCell > number </TableCell> 
+                <TableCell > img </TableCell> 
+                <TableCell > price </TableCell> 
+                <TableCell>upload</TableCell>
+                <TableCell > save </TableCell> 
+                <TableCell > delete </TableCell> 
+                </TableHead> 
+                {item} 
+                </Table>
+                </Paper >
+                </div>
 
 
 
