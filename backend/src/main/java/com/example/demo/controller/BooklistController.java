@@ -36,13 +36,13 @@ public class BooklistController {
         JSONObject jsonobeject= JSON.parseObject(json);
         String bookname=jsonobeject.getString("bookname");
         String isbn=jsonobeject.getString("isbn");
-
+        String bookimg=jsonobeject.getString("bookimg");
         double price=jsonobeject.getDouble("price");
         int number=jsonobeject.getInteger("number");
 
 
 
-        return bookservice.editsave(bookname,isbn,"",price,number);
+        return bookservice.editsave(bookname,isbn,bookimg,price,number);
     }
     @RequestMapping(value = "/jpaeditdelete")
     public Object editdelete(HttpServletRequest request,HttpServletResponse response, HttpSession session)
