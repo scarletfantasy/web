@@ -22,3 +22,9 @@ web for se228
 ## static resource
 
 the static web are stored in static directory such as images
+
+---
+
+## problem
+
+the upload images are stored in the backend project so the backend must be restartes to show the new image
