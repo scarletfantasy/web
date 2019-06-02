@@ -24,6 +24,19 @@ class Direct extends Component
       this.state={user:{id:" "},anchorEl: null};
       
       this.logout=this.logout.bind(this);
+      $.ajax({
+        url: "http://localhost:8080/jpacurrentuser",
+        type:"POST",
+        params:{"contentType": "application/json;charset=utf-8"},
+        xhrFields: {
+          withCredentials: true
+      },
+        success: function f(data) {
+          
+          this.setState({user:{id:data}});
+
+        }.bind(this)
+      })
     }
     componentWillReceiveProps(nextprop)
     {

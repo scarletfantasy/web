@@ -2,6 +2,7 @@ package com.example.demo.daoimpl;
 
 import com.example.demo.dao.orderDao;
 import com.example.demo.entity.Order;
+import com.example.demo.repo.bookRepo;
 import com.example.demo.repo.orderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,8 @@ import java.util.List;
 public class orderDaoImpl implements orderDao {
     @Autowired
     orderRepo orderrepo;
+    @Autowired
+    bookRepo bookrepo;
     @Override
     public List<Order> getallorder()
     {
@@ -50,6 +53,18 @@ public class orderDaoImpl implements orderDao {
         }
         Order order=new Order();
         return order;
+    }
+    @Override
+    public void deletorderbybook(String isbn)
+    {
+        List<Order> cart=orderrepo.findAll();
+        for(Order order:cart)
+        {
+            if(order.getbook().getisbn().equals(isbn))
+            {
+                orderrepo.delete(order);
+            }
+        }
     }
 
 

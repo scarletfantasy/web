@@ -17,20 +17,7 @@ public class OrderController {
     @Autowired
     orderService orderservice;
 
-    @RequestMapping(value="/historytest")
-    public Object test1()
-    {
-        /*Book book=bookdao.getbookbyid("949849444").get();
-        User user=userdao.getuserbyid("admin").get();
-        History history=new History("123","1","admin","123",book,user);
-        historydao.edithistory(history);
-        historydao.flush();*/
 
-        return 0;
-
-
-
-    }
     @RequestMapping(value="/jpaaddtocart")
     public Object addtocart(HttpServletResponse response, HttpServletRequest request)
     {

@@ -1,6 +1,7 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.dao.bookDao;
+import com.example.demo.dao.orderDao;
 import com.example.demo.entity.Book;
 import com.example.demo.service.bookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ public class bookServiceImpl implements bookService {
 
     @Autowired
     bookDao bookdao;
+    @Autowired
+    orderDao orderdao;
     @Override
     public Object booklist()
     {
@@ -32,6 +35,7 @@ public class bookServiceImpl implements bookService {
         book.setbookname(bookname);
         book.setnumber(number);
         book.setprice(price);
+
         bookdao.editbook(book);
 
 
@@ -40,7 +44,17 @@ public class bookServiceImpl implements bookService {
     @Override
     public Object editdelete(String isbn) {
 
+        orderdao.deletorderbybook(isbn);
         bookdao.deletbookbyisbn(isbn);
         return 0;
+    }
+    @Override
+    public Object uploadimg(String bookimg,String isbn)
+    {
+        Book book=bookdao.getbookbyid(isbn).get();
+        book.setbookimg("http://localhost:8081/img/"+bookimg);
+        bookdao.editbook(book);
+        bookdao.flush();
+        return "upload success";
     }
 }

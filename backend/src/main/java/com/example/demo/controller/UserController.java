@@ -24,23 +24,7 @@ public class UserController {
     @Autowired
     userService userservice;
 
-    @RequestMapping(value="/jpatest")
-    public Object test(HttpServletResponse response, HttpServletRequest request, HttpSession session)
-    {
-        List<User> alluser=userdao.getalluser();
-        for(User user:alluser)
-        {
-            if(user.getId().equals("user4"))
-            {
-                user.setPassword("abcd");
-                userdao.edituser(user);
-            }
 
-        }
-
-
-        return 0;
-    }
 
     @RequestMapping(value="/jpalogin")
     public Object login(HttpServletResponse response, HttpServletRequest request)

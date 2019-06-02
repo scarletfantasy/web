@@ -3,8 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dao.bookDao;
 import com.example.demo.dao.historyDao;
 import com.example.demo.dao.userDao;
-import com.example.demo.repo.*;
-import com.example.demo.entity.*;
+import com.example.demo.entity.bookimage;
+import com.example.demo.repo.imageRepo;
+import com.example.demo.repo.orderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,16 +21,18 @@ public class testcontroller {
     historyDao historydao;
     @Autowired
     userDao userdao;
-    @RequestMapping(value="/testorder")
+    @Autowired
+    imageRepo imagerepo;
+    @RequestMapping(value="/test")
     public Object test()
     {
-        User user=userdao.getuserbyid("admin").get();
-        Book book=bookdao.getbookbyid("949849444").get();
+        System.out.println("success");
+        bookimage image1=new bookimage();
+        image1.setisbn("123");
+        image1.setimg("456");
+        imagerepo.save(image1);
 
-        Order order=new Order("123",10,book,user);
-        orderrepo.save(order);
-        orderrepo.flush();
-        return orderrepo.getorderbyid("admin");
+        return imagerepo.findAll();
 
     }
 }

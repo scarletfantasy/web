@@ -21,4 +21,10 @@ web for se228
 
 ## static resource
 
-the static web are stored in static directory such as images
+the images are now stored in a seperate tomcat
+
+---
+
+## future goal
+
+store the images in mongodb

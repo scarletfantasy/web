@@ -45,6 +45,7 @@ render()
         
         
             return(
+                
                 <Redirect to={{pathname:'/',query:{id:" "}}}></Redirect>
                 )
             }

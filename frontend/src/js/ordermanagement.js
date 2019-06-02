@@ -18,17 +18,24 @@ import TableRow from '@material-ui/core/TableRow';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import $ from 'jquery'
+import echarts from 'echarts/lib/echarts';
+// 引入柱状图
+import  'echarts/lib/chart/bar';
+// 引入提示框和标题组件
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/title';
 class Ordermanagement extends Component
 {
     constructor(props)
     {
         super(props);
-        this.state={user:" ",cart:[],from:"2000-01-01",to:"2099-12-31",book:"",userid:""}
+        this.state={user:" ",cart:[],from:"2000-01-01",to:"2099-12-31",book:"",userid:"",show:1}
         this.handlechange=this.handlechange.bind(this)
         this.handlefrom=this.handlefrom.bind(this)
         this.handleto=this.handleto.bind(this)
         this.handleuser=this.handleuser.bind(this)
         this.handlebook=this.handlebook.bind(this)
+        this.changeshow=this.changeshow.bind(this)
         $.ajax({
             url: "http://localhost:8080/jpacurrentuser",
             type:"POST",
@@ -42,6 +49,101 @@ class Ordermanagement extends Component
               
             }.bind(this)
           })
+    }
+    componentDidUpdate()
+    {
+        
+        if(this.state.user=="admin"&&this.state.show==0)
+        {
+            
+            var myChart = echarts.init(document.getElementById('chart'));
+            var cart=this.state.cart;
+            var books=new Map();
+            var from=this.state.from;
+            var to=this.state.to;
+            var ftime=new Date(from)
+            var ttime=new Date(to)
+            var userid=this.state.userid;
+            var book=this.state.book;
+            var users=new Map();
+            for(var i=0;i<cart.length;++i)
+            {
+                
+                var time=new Date(cart[i].time)
+                if(ftime<time&&time<ttime&&(book==""||cart[i].isbn.search(book)!=-1)&&(userid==""||cart[i].userid.search(userid)!=-1))
+                {
+                    
+                    if(books.get(cart[i].isbn)!=null)
+                    {
+                        books.set(cart[i].isbn,books.get(cart[i].isbn)+cart[i].number)
+                    }
+                    else{
+                        books.set(cart[i].isbn,cart[i].number)
+                    }
+                }
+                
+            }
+            myChart.setOption({
+                title: { text: '各书籍销量展示' },
+                tooltip: {},
+                xAxis: {
+                    data: Array.from(books.keys())
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: Array.from(books.values())
+                }]
+            });
+            var myChart1 = echarts.init(document.getElementById('user'));
+            for(var i=0;i<cart.length;++i)
+            {
+                
+                var time=new Date(cart[i].time)
+                if(ftime<time&&time<ttime&&(book==""||cart[i].isbn.search(book)!=-1)&&(userid==""||cart[i].userid.search(userid)!=-1))
+                {
+                    
+                    if(users.get(cart[i].userid)!=null)
+                    {
+                        users.set(cart[i].userid,users.get(cart[i].userid)+cart[i].number*cart[i].price)
+                    }
+                    else{
+                        users.set(cart[i].userid,cart[i].number*cart[i].price)
+                    }
+                    
+                }
+                
+            }
+            for (var key of users.keys()) {
+                users.set(key,users.get(key).toFixed(2))
+              }
+            myChart1.setOption({
+                title: { text: '各用户花费展示' },
+                tooltip: {},
+                xAxis: {
+                    data: Array.from(users.keys())
+                },
+                yAxis: {},
+                series: [{
+                    name: '话费',
+                    type: 'bar',
+                    data: Array.from(users.values())
+                }]
+            });
+        }
+    }
+        
+    
+    changeshow()
+    {
+        var show=this.state.show;
+        
+        show=(show==1)?0:1;
+        this.setState({show:show})
+        console.log(show)
+        
+        
     }
     handlefrom(e)
     {
@@ -156,76 +258,101 @@ class Ordermanagement extends Component
             return(
                 <div>
                     <Paper id="select">
-                    <div>
-                    
-                    
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="from">from</InputLabel>
-                    <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="to">to</InputLabel>
-                    <Input value={this.state.to} onChange={this.handleto}>to</Input>
-                    </FormControl>
-                    <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
-                    
-                </div>
-                
-                <Table>
-                    <TableHead>
-                        <TableCell>id</TableCell>
-                        <TableCell>isbn</TableCell>
-                        <TableCell>time</TableCell>
-                        <TableCell>number</TableCell>
-                    </TableHead>
-                    {item}
-                </Table>
-                </Paper>
-                
+                        <div>
+                            <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="from">from</InputLabel>
+                            <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
+                            </FormControl>
+                            <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="to">to</InputLabel>
+                            <Input value={this.state.to} onChange={this.handleto}>to</Input>
+                            </FormControl>
+                            <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
+                        </div>               
+                        <Table>
+                            <TableHead>
+                                <TableCell>id</TableCell>
+                                <TableCell>isbn</TableCell>
+                                <TableCell>time</TableCell>
+                                <TableCell>number</TableCell>
+                            </TableHead>
+                            {item}
+                        </Table>
+                    </Paper>
                 </div>
             )
         }
         else{
-            return(
-                <div>
-                    <Paper id="select">
+            if(this.state.show)
+            {
+                return(
                     <div>
-                    
-                    
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="from">from</InputLabel>
-                    <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="to">to</InputLabel>
-                    <Input value={this.state.to} onChange={this.handleto}>to</Input>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="to">book</InputLabel>
-                    <Input value={this.state.book} onChange={this.handlebook}>book</Input>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="to">userid</InputLabel>
-                    <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
-                    </FormControl>
-                    <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
-                    
-                </div>
-                
-                <Table>
-                    <TableHead>
-                        <TableCell>id</TableCell>
-                        <TableCell>isbn</TableCell>
-                        <TableCell>time</TableCell>
-                        <TableCell>number</TableCell>
-                        <TableCell>user</TableCell>
-                    </TableHead>
-                    {item}
-                </Table>
-                </Paper>
-                
-                </div>
-                )
+                        <Paper id="select">
+                            <div>                   
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="from">from</InputLabel>
+                                <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">to</InputLabel>
+                                <Input value={this.state.to} onChange={this.handleto}>to</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">book</InputLabel>
+                                <Input value={this.state.book} onChange={this.handlebook}>book</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">userid</InputLabel>
+                                <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
+                                </FormControl>
+                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
+                            </div>
+                            <Button onClick={this.changeshow}>changeshow</Button>
+                            <Table>
+                                <TableHead>
+                                    <TableCell>id</TableCell>
+                                    <TableCell>isbn</TableCell>
+                                    <TableCell>time</TableCell>
+                                    <TableCell>number</TableCell>
+                                    <TableCell>user</TableCell>
+                                </TableHead>
+                                {item}
+                            </Table>
+                        </Paper>                
+                    </div>
+                    )
+            }
+            else{
+                return(
+                    <div>
+                        <Paper id="select">
+                            <div>                   
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="from">from</InputLabel>
+                                <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">to</InputLabel>
+                                <Input value={this.state.to} onChange={this.handleto}>to</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">book</InputLabel>
+                                <Input value={this.state.book} onChange={this.handlebook}>book</Input>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="to">userid</InputLabel>
+                                <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
+                                </FormControl>
+                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
+                            </div>
+                            <Button onClick={this.changeshow}>changeshow</Button>
+                            <div id="chart" style={{ width: 400, height: 400 }}></div>
+                            <div id="user" style={{ width: 400, height: 400 ,float:"left"}}></div>
+                        </Paper>                
+                    </div>
+                    )
+            }
+            
         }
         
     }
