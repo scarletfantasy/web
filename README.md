@@ -21,10 +21,10 @@ web for se228
 
 ## static resource
 
-the static web are stored in static directory such as images
+the images are now stored in a seperate tomcat
 
 ---
 
-## problem
+## future goal
 
-the upload images are stored in the backend project so the backend must be restartes to show the new image
+store the images in mongodb

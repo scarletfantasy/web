@@ -52,7 +52,7 @@ public class bookServiceImpl implements bookService {
     public Object uploadimg(String bookimg,String isbn)
     {
         Book book=bookdao.getbookbyid(isbn).get();
-        book.setbookimg("http://localhost:8080/img/"+bookimg);
+        book.setbookimg("http://localhost:8081/img/"+bookimg);
         bookdao.editbook(book);
         bookdao.flush();
         return "upload success";

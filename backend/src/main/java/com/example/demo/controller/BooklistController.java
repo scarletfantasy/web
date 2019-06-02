@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 
 @RestController
@@ -58,9 +59,14 @@ public class BooklistController {
         MultipartFile file=mprequest.getFile("img");
         String index=mprequest.getParameter("isbn");
         String houzhui=mprequest.getParameter("houzhui");
-        String url="D:\\github\\web\\backend\\src\\main\\resources\\static\\img\\"+index+"."+houzhui;
+        String url="D:\\apache-tomcat-8.5.41\\webapps\\img\\"+index+"."+houzhui;
+
         System.out.println( file.getName());
-        file.transferTo(new java.io.File(url));
+        File imgfile=new java.io.File(url);
+        file.transferTo(imgfile);
+
+        
+
         return bookservice.uploadimg(index+"."+houzhui,index);
     }
 
