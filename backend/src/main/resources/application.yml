@@ -15,6 +15,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017
-      database: img
+      database: comments
 
 
