@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.service.bookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -68,6 +69,12 @@ public class BooklistController {
         
 
         return bookservice.uploadimg(index+"."+houzhui,index);
+    }
+
+    @RequestMapping(value="/getdetail")
+    public Object getdetail(@RequestParam(value="isbn") String isbn)
+    {
+        return bookservice.findbook(isbn);
     }
 
 

@@ -18,10 +18,40 @@ class Detail extends Component
     constructor(props)
     {
         super(props);
-        this.state={book:this.props.location.query.book,number:0,leave:false}
+        this.state={book:{},number:0,leave:false,introduction:""}
         this.handlechange=this.handlechange.bind(this);
         this.handleclick=this.handleclick.bind(this);
+        this.loaddata=this.loaddata.bind(this);
         
+    }
+    componentWillMount()
+    {
+        this.loaddata();
+    }
+    loaddata()
+    {
+        var isbn=window.location.href.split("#")[1].split("/")[2];
+        console.log(isbn);
+        $.ajax({
+            url: "http://localhost:8080/getdetail",
+            type:"POST",
+            params:{"contentType": "application/json;charset=utf-8"},
+            data:{isbn:isbn},
+            xhrFields: {
+              withCredentials: true
+            },
+            success: function f(data) {
+              if(data.comments!=null)
+              {
+                this.setState({book:data.book,introduction:data.comments.introduction});
+              }
+              else{
+                this.setState({book:data.book,introduction:""});
+              }
+              
+    
+            }.bind(this)
+          })
     }
     
     handlechange(e)
@@ -73,7 +103,9 @@ class Detail extends Component
     }
     render()
     {
-        var book=this.props.location.query.book;
+        
+        
+        var book=this.state.book;
         if(!this.state.leave)
         {
             return(
@@ -82,8 +114,11 @@ class Detail extends Component
                     <h4>{book.bookname}</h4>
                     <img src={book.bookimg}></img>
                     <br/>
+                    <div>{this.state.introduction}</div>
+                    <br/> 
                     <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="amount">库存:剩余数量{book.number}</InputLabel>  
+                                      
+                    <InputLabel htmlFor="amount">库存:剩余数量{book.number}</InputLabel>                      
                     <Input value={this.state.number} onChange={this.handlechange}></Input>
                     </FormControl>
                     <br/>

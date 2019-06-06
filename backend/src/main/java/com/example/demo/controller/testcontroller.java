@@ -26,19 +26,21 @@ public class testcontroller {
     userDao userdao;
     @Autowired
     commentsRepo commentsrepo;
+
     @RequestMapping(value="/test")
     public Object test()
     {
         System.out.println("success");
         bookcomments comment1=new bookcomments();
-        comment1.setisbn("123");
+        comment1.setisbn("974564564");
         List<String> comments=new LinkedList<>();
         comment1.setcomment(comments);
         comment1.addcomment("taiqiangle");
         comment1.addcomment("dqwdqdwqd");
+        comment1.setintroduction("harry potter");
         commentsrepo.save(comment1);
 
-        return commentsrepo.findAll();
+        return bookdao.getcommentbyisbn("949849444");
 
     }
 }

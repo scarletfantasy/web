@@ -30,7 +30,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorize)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/jpalogin","/sslogin","/jpabooklist","/jparegister","/img/*","/jpacurrentuser","/test").permitAll()
+                .antMatchers("/jpalogin","/sslogin","/jpabooklist","/jparegister","/img/*","/jpacurrentuser","/test","/getdetail").permitAll()
                 .antMatchers("/jpashowcart","/jpacleancart","/jpaaddtocart","/jpashowhistory","/jpadeleteorder").hasAnyAuthority("USER","ADMIN")
                 .antMatchers("/jpaeditsave","/jpaeditdelete","/jpashowuser","/uploadimg").hasAuthority("ADMIN")
                 .anyRequest().authenticated()

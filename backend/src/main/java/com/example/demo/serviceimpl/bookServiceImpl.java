@@ -3,11 +3,15 @@ package com.example.demo.serviceimpl;
 import com.example.demo.dao.bookDao;
 import com.example.demo.dao.orderDao;
 import com.example.demo.entity.Book;
+import com.example.demo.entity.bookcomments;
 import com.example.demo.service.bookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class bookServiceImpl implements bookService {
 
@@ -56,5 +60,24 @@ public class bookServiceImpl implements bookService {
         bookdao.editbook(book);
         bookdao.flush();
         return "upload success";
+    }
+    @Override
+    public Object findbook(String isbn)
+    {
+        Book book=bookdao.getbookbyid(isbn).get();
+        Map<String,Object> container=new HashMap<>();
+        container.put("book",book);
+        bookcomments comments;
+        if(bookdao.getcommentbyisbn(isbn).size()>0)
+        {
+            comments=bookdao.getcommentbyisbn(isbn).get(0);
+        }
+        else
+        {
+            comments=null;
+        }
+        container.put("comments",comments);
+        return container;
+
     }
 }
