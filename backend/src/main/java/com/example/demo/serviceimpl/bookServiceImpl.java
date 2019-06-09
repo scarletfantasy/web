@@ -5,6 +5,7 @@ import com.example.demo.dao.orderDao;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.bookcomments;
 import com.example.demo.service.bookService;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +54,11 @@ public class bookServiceImpl implements bookService {
         return 0;
     }
     @Override
-    public Object uploadimg(String bookimg,String isbn)
+    public Object uploadimg(byte[] data,String isbn)
     {
-        Book book=bookdao.getbookbyid(isbn).get();
-        book.setbookimg("http://localhost:8081/img/"+bookimg);
-        bookdao.editbook(book);
-        bookdao.flush();
+        bookcomments comment=bookdao.getcommentbyisbn(isbn).get(0);
+        comment.setContent(new Binary(data));
+        bookdao.editcomments(comment);
         return "upload success";
     }
     @Override
@@ -79,5 +79,34 @@ public class bookServiceImpl implements bookService {
         container.put("comments",comments);
         return container;
 
+    }
+    @Override
+    public Object savecomments(String isbn,String intro)
+    {
+        List<bookcomments> comments=bookdao.getcommentbyisbn(isbn);
+        if(comments.size()==0)
+        {
+            bookcomments comment=new bookcomments();
+            comment.setintroduction(intro);
+            bookdao.editcomments(comment);
+        }
+        else
+        {
+            bookcomments comment=comments.get(0);
+            comment.setintroduction(intro);
+            bookdao.editcomments(comment);
+        }
+        return 0;
+
+    }
+
+    @Override
+    public Object findimg(String isbn) {
+        if(bookdao.getcommentbyisbn(isbn).size()>0)
+        {
+            return bookdao.getcommentbyisbn(isbn).get(0).getContent().getData();
+        }
+
+        return null;
     }
 }

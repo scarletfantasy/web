@@ -112,7 +112,7 @@ class Detail extends Component
                 <div>
                     <Paper id="detail">
                     <h4>{book.bookname}</h4>
-                    <img src={book.bookimg}></img>
+                    <img src={"http://localhost:8080/findimg/"+book.isbn}></img>
                     <br/>
                     <div>{this.state.introduction}</div>
                     <br/> 

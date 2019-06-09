@@ -4,16 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.service.bookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 
 @RestController
@@ -58,17 +56,12 @@ public class BooklistController {
     {
         MultipartHttpServletRequest mprequest = (MultipartHttpServletRequest) request;
         MultipartFile file=mprequest.getFile("img");
-        String index=mprequest.getParameter("isbn");
-        String houzhui=mprequest.getParameter("houzhui");
-        String url="D:\\apache-tomcat-8.5.41\\webapps\\img\\"+index+"."+houzhui;
+        String isbn=mprequest.getParameter("isbn");
 
-        System.out.println( file.getName());
-        File imgfile=new java.io.File(url);
-        file.transferTo(imgfile);
 
         
 
-        return bookservice.uploadimg(index+"."+houzhui,index);
+        return bookservice.uploadimg(file.getBytes(),isbn);
     }
 
     @RequestMapping(value="/getdetail")
@@ -76,7 +69,18 @@ public class BooklistController {
     {
         return bookservice.findbook(isbn);
     }
+    @RequestMapping(value="/jpaintroduction")
+    public Object editintroduction(@RequestParam(value="isbn") String isbn,@RequestParam(value="introduction") String intro)
+    {
+        return bookservice.savecomments(isbn,intro);
+    }
+    @GetMapping(value="/findimg/{isbn}" , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public Object findimg(@PathVariable String isbn)
+    {
 
+        return bookservice.findimg(isbn);
+
+    }
 
 
 }

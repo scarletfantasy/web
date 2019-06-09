@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -8,8 +9,19 @@ import java.util.List;
 public class bookcomments {
     @Id
     private String isbn;
+
     private List<String> comments;
     private String introduction;
+    private Binary content;
+
+    public void setContent(Binary content) {
+        this.content = content;
+    }
+
+    public Binary getContent() {
+        return content;
+    }
+
     public void setisbn(String isbn)
     {
         this.isbn=isbn;

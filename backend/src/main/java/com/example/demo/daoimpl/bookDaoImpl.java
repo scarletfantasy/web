@@ -57,6 +57,15 @@ public class bookDaoImpl implements bookDao {
     @Override
     public void editcomments(bookcomments comments)
     {
-        commentsrepo.save(comments);
+        if(commentsrepo.findByIsbn(comments.getisbn()).size()==0)
+        {
+            commentsrepo.save(comments);
+        }
+        else
+        {
+            commentsrepo.deleteByIsbn(comments.getisbn());
+            commentsrepo.save(comments);
+        }
+
     }
 }
