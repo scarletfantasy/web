@@ -23,7 +23,7 @@ class Introduction extends Component{
     constructor(props){
         super(props);
         
-        this.state={isbn:"",introduction:""};
+        this.state={isbn:"",introduction:" "};
         
         this.handlechange=this.handlechange.bind(this);
         this.handlesave=this.handlesave.bind(this);
@@ -48,7 +48,7 @@ class Introduction extends Component{
                 this.setState({introduction:data.comments.introduction});
               }
               else{
-                this.setState({introduction:""});
+                this.setState({introduction:" "});
               }
               
     
@@ -73,7 +73,7 @@ class Introduction extends Component{
                 this.setState({introduction:data.comments.introduction});
               }
               else{
-                this.setState({introduction:""});
+                this.setState({introduction:" "});
               }
               
     

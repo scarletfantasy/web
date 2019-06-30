@@ -131,7 +131,8 @@ class Detail extends Component
         else{
             
             return(
-                <Redirect to={{pathname:'/',query:{id:this.props.location.query.id,order:{book:book,number:this.state.number}}}}></Redirect>
+                /*<Redirect to={{pathname:'/',query:{id:this.props.location.query.id,order:{book:book,number:this.state.number}}}}></Redirect>*/
+                <Redirect to={{pathname:'/'}}></Redirect>
             )
         }
 

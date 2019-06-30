@@ -143,6 +143,7 @@ class Direct extends Component
               <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/login'}}>login</Link></MenuItem>
               <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/register'}}>register</Link></MenuItem>
               <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/logout'}}>logout</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/logout'}}>information</Link></MenuItem>
             </Menu>
           </div>
           

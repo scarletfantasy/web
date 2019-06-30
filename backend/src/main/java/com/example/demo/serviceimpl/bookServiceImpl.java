@@ -56,7 +56,16 @@ public class bookServiceImpl implements bookService {
     @Override
     public Object uploadimg(byte[] data,String isbn)
     {
-        bookcomments comment=bookdao.getcommentbyisbn(isbn).get(0);
+        bookcomments comment;
+        if(bookdao.getcommentbyisbn(isbn).size()!=0)
+        {
+            comment=bookdao.getcommentbyisbn(isbn).get(0);
+        }
+        else
+        {
+            comment=new bookcomments();
+            comment.setisbn(isbn);
+        }
         comment.setContent(new Binary(data));
         bookdao.editcomments(comment);
         return "upload success";
@@ -104,7 +113,9 @@ public class bookServiceImpl implements bookService {
     public Object findimg(String isbn) {
         if(bookdao.getcommentbyisbn(isbn).size()>0)
         {
+            System.out.println("find");
             return bookdao.getcommentbyisbn(isbn).get(0).getContent().getData();
+
         }
 
         return null;
