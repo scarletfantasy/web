@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +97,7 @@ public class bookServiceImpl implements bookService {
         if(comments.size()==0)
         {
             bookcomments comment=new bookcomments();
+            comment.setisbn(isbn);
             comment.setintroduction(intro);
             bookdao.editcomments(comment);
         }
@@ -120,4 +122,35 @@ public class bookServiceImpl implements bookService {
 
         return null;
     }
+    @Override
+    public Object addcomment(String addcomment,String isbn){
+        List<bookcomments> comments=bookdao.getcommentbyisbn(isbn);
+        System.out.println("success1");
+        if(comments.size()==0)
+        {
+            bookcomments comment=new bookcomments();
+            comment.setisbn(isbn);
+            List<String> newcomments = new LinkedList<String>();
+            newcomments.add(addcomment);
+            comment.setcomment(newcomments);
+            bookdao.editcomments(comment);
+        }
+        else
+        {
+            System.out.println("success2");
+            bookcomments comment=comments.get(0);
+            System.out.println("success3");
+            List<String> newcomments=comment.getComments();
+            if(newcomments==null)
+            {
+                newcomments=new LinkedList<String>();
+            }
+            newcomments.add(addcomment);
+            comment.setcomment(newcomments);
+            System.out.println("success4");
+            bookdao.editcomments(comment);
+        }
+        return 0;
+    }
+
 }

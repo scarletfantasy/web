@@ -10,6 +10,8 @@ public interface userService {
 
 
     public Object logout();
+    public Object findimg(String id);
 
+    public Object uploadimg(byte[] data,String id);
 
 }

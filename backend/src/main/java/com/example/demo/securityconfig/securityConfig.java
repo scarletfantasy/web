@@ -31,7 +31,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/jpalogin","/sslogin","/jpabooklist","/jparegister","/img/*","/jpacurrentuser","/test","/getdetail","/testimg","/findimg/*").permitAll()
-                .antMatchers("/jpashowcart","/jpacleancart","/jpaaddtocart","/jpashowhistory","/jpadeleteorder").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/jpashowcart","/jpacleancart","/jpaaddtocart","/jpashowhistory","/jpadeleteorder","/jpaaddcomment","/uploaduserimg","/finduserimg/*").hasAnyAuthority("USER","ADMIN")
                 .antMatchers("/jpaeditsave","/jpaeditdelete","/jpashowuser","/uploadimg","/jpaintroduction").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()

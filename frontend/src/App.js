@@ -20,6 +20,7 @@ import Ordermanagement from './js/ordermanagement'
 import Register from './js/register'
 import Logout from './js/logout'
 import { browserHistory } from 'react-router'
+import Userinfo from './js/userinfo'
 
 
 class App extends Component {
@@ -48,6 +49,7 @@ class App extends Component {
       <Route path="/register" component={Register}></Route>
       <Route path="/logout" component={Logout}></Route>
       <Route path="/usermanagement" component={Usermanage}></Route>
+      <Route path="/userinfo" component={Userinfo}></Route>
         
         
       </Router>

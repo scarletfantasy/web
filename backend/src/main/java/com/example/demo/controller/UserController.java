@@ -7,12 +7,18 @@ import com.example.demo.dao.userDao;
 import com.example.demo.entity.User;
 import com.example.demo.service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -115,6 +121,28 @@ public class UserController {
             return " ";
         }
         return request.getSession().getAttribute("id");
+    }
+    @GetMapping(value="/finduserimg/{id}" , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public Object findimg(@PathVariable String id)
+    {
+
+
+        return userservice.findimg(id);
+
+    }
+    @RequestMapping(value="/uploaduserimg")
+    public Object uploadimg (HttpServletRequest request,HttpServletResponse response) throws IOException
+    {
+        MultipartHttpServletRequest mprequest = (MultipartHttpServletRequest) request;
+        MultipartFile file=mprequest.getFile("img");
+        HttpSession session=request.getSession();
+        String id=(String)session.getAttribute("id");
+
+
+
+
+
+        return userservice.uploadimg(file.getBytes(),id);
     }
 
 }

@@ -8,4 +8,5 @@ public interface bookService {
     public Object findbook(String isbn);
     public Object savecomments(String isbn,String intro);
     public Object findimg(String isbn);
+    public Object addcomment(String comment,String isbn);
 }

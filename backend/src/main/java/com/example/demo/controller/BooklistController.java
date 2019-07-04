@@ -81,6 +81,11 @@ public class BooklistController {
         return bookservice.findimg(isbn);
 
     }
+    @RequestMapping(value="/jpaaddcomment")
+    public Object addcomment(@RequestParam(value="comment") String comment,@RequestParam(value="isbn") String isbn)
+    {
+        return bookservice.addcomment(comment,isbn);
+    }
 
 
 }
