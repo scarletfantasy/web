@@ -36,10 +36,10 @@ class Bookskim extends Component {
           <TableCell><p >{this.props.book.bookname}</p></TableCell>
           <TableCell><p >{this.props.book.isbn}</p></TableCell>
           <TableCell><p >{this.props.book.number}</p></TableCell>
-          <TableCell><img id="skimimg" src={this.props.book.bookimg}></img></TableCell>
+          <TableCell><img id="skimimg" src={"http://localhost:8080/findimg/"+this.props.book.isbn}></img></TableCell>
           <TableCell><p >price:{this.props.book.price}</p></TableCell>
           
-          <TableCell><Link  to={{pathname:'/detail',query:{book:this.props.book}}}>detail</Link></TableCell>
+          <TableCell><Link  to={{pathname:'/detail/'+this.props.book.isbn}}>detail</Link></TableCell>
           
           
         </TableRow>

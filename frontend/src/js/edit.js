@@ -8,6 +8,7 @@ import {
     Redirect,
     withRouter
 } from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
@@ -18,12 +19,117 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import $ from 'jquery';
 import '../css/edit.css'
+class Introduction extends Component{
+    constructor(props){
+        super(props);
+        
+        this.state={isbn:"",introduction:" "};
+        
+        this.handlechange=this.handlechange.bind(this);
+        this.handlesave=this.handlesave.bind(this);
+        
+        
+    }
+    componentWillMount()
+    {
+        var isbn=this.props.isbn;
+        this.setState({isbn:isbn});
+        $.ajax({
+            url: "http://localhost:8080/getdetail",
+            type:"POST",
+            params:{"contentType": "application/json;charset=utf-8"},
+            data:{isbn:isbn},
+            xhrFields: {
+              withCredentials: true
+            },
+            success: function f(data) {
+              if(data.comments!=null)
+              {
+                this.setState({introduction:data.comments.introduction});
+              }
+              else{
+                this.setState({introduction:" "});
+              }
+              
+    
+            }.bind(this)
+          })
+    }
+    componentWillReceiveProps(nextprop)
+    {
+        var isbn=nextprop.isbn;
+        this.setState({isbn:isbn});
+        $.ajax({
+            url: "http://localhost:8080/getdetail",
+            type:"POST",
+            params:{"contentType": "application/json;charset=utf-8"},
+            data:{isbn:isbn},
+            xhrFields: {
+              withCredentials: true
+            },
+            success: function f(data) {
+              if(data.comments!=null)
+              {
+                this.setState({introduction:data.comments.introduction});
+              }
+              else{
+                this.setState({introduction:" "});
+              }
+              
+    
+            }.bind(this)
+          })
+    }
+    handlechange(e)
+    {
+        this.setState({introduction:e.target.value});
+    }
+    handlesave(e)
+    {
+        var isbn=this.state.isbn;
+        var introduction=this.state.introduction;
+        $.ajax({
+            url: "http://localhost:8080/jpaintroduction",
+            type: "POST",
+            params: {
+                "contentType": "application/json;charset=utf-8"
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: {
+                isbn:isbn,
+                introduction:introduction
+            },
+            success: function f(data) {
+
+                alert("success");
+
+            }.bind(this)
+        })
+    }
+    render()
+    {
+        
+        
+        return(
+            <div>
+                <Paper>
+                <textarea id="board" onChange={this.handlechange} value={this.state.introduction} cols="5" rows="3" ></textarea>
+                <br/>
+                <Button onClick={this.handlesave}>save</Button>
+                </Paper>
+            </div>
+        )
+    }
+}
 class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             book: [],
-            searchname: ""
+            searchname: "",
+            showintro:0
         };
         this.handlechange = this.handlechange.bind(this);
         this.handlesave = this.handlesave.bind(this);
@@ -31,6 +137,12 @@ class Edit extends Component {
         this.reload = this.reload.bind(this);
         this.searchchange = this.searchchange.bind(this);
         this.newbook = this.newbook.bind(this);
+        this.showintroduction=this.showintroduction.bind(this);
+    }
+    showintroduction(e)
+    {
+        this.setState({showintro:this.state.book[e.target.id].isbn});
+        console.log(this.state.book[e.target.id].isbn)
     }
     newbook() {
         var books = this.state.book;
@@ -61,9 +173,7 @@ class Edit extends Component {
             xhrFields: {
                 withCredentials: true
             },
-            data: {
-                coo: "o"
-            },
+            
             success: function f(data) {
 
                 this.setState({
@@ -120,7 +230,7 @@ class Edit extends Component {
             formdata.append("img",$(id)[0].files[0]);
             formdata.append("isbn",book.isbn);
             formdata.append("houzhui",$(id)[0].value.split(".")[1])
-            console.log("enter")
+            console.log(book.isbn);
         
             $.ajax({
                 url:"http://localhost:8080/uploadimg",
@@ -206,13 +316,16 @@ class Edit extends Component {
                     <TableCell > 
                         < Input id = { i + ".number"} value = {book[i].number } onChange = { this.handlechange}/>
                     </TableCell >
-                    <TableCell > < img id = "skimimg" src={book[i].bookimg}/>
+                    <TableCell > < img id = "skimimg" src={"http://localhost:8080/findimg/"+book[i].isbn}/>
                     </TableCell >
                     < TableCell > 
                     < Input id = {i + ".price"}value = {book[i].price } onChange = {this.handlechange}/>
                     </TableCell >
                     <TableCell > 
                     <input type="file" id = {i+"img"} name={i+"img"}></input>
+                    </TableCell >
+                    <TableCell > 
+                    <button id={i}onClick={this.showintroduction}>detail</button>
                     </TableCell >
                     < TableCell > < button id = { i}onClick = { this.handlesave} > save </button>
                     </TableCell >
@@ -223,7 +336,8 @@ class Edit extends Component {
 
 
             }
-            return ( 
+            var mainpart=[];
+            mainpart.push(
                 <div id = "skimpage">                
                 <Paper>
                 
@@ -239,12 +353,28 @@ class Edit extends Component {
                 <TableCell > img </TableCell> 
                 <TableCell > price </TableCell> 
                 <TableCell>upload</TableCell>
+                <TableCell>introduction</TableCell>
                 <TableCell > save </TableCell> 
                 <TableCell > delete </TableCell> 
                 </TableHead> 
                 {item} 
                 </Table>
                 </Paper >
+                </div>
+            );
+            if(this.state.showintro)
+            {
+                mainpart.push(
+                    <div>
+                        <Introduction isbn={this.state.showintro}></Introduction>
+                    </div>
+                    )
+            }
+            
+            return ( 
+                
+                <div>
+                {mainpart}
                 </div>
 
 
