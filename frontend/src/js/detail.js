@@ -35,7 +35,7 @@ class Detail extends Component
         var isbn=window.location.href.split("#")[1].split("/")[2];
         console.log(isbn);
         $.ajax({
-            url: "http://localhost:8080/getdetail",
+            url: "http://101.132.98.60:12346/getdetail",
             type:"POST",
             params:{"contentType": "application/json;charset=utf-8"},
             data:{isbn:isbn},
@@ -83,7 +83,7 @@ class Detail extends Component
         console.log(stime);
         
         $.ajax({
-            url: "http://localhost:8080/jpaaddtocart",
+            url: "http://101.132.98.60:12346/jpaaddtocart",
             type:"POST",
             xhrFields: {
                 withCredentials: true
@@ -111,7 +111,7 @@ class Detail extends Component
     {
         var isbn=window.location.href.split("#")[1].split("/")[2];
         $.ajax({
-            url: "http://localhost:8080/jpaaddcomment",
+            url: "http://101.132.98.60:12346/jpaaddcomment",
             type:"POST",
             xhrFields: {
                 withCredentials: true
@@ -152,7 +152,7 @@ class Detail extends Component
                 <div>
                     <Paper id="detail">
                     <h4>{book.bookname}</h4>
-                    <img src={"http://localhost:8080/findimg/"+book.isbn}></img>
+                    <img src={"http://101.132.98.60:12346/findimg/"+book.isbn}></img>
                     <br/>
                     <div>{this.state.introduction}</div>
                     <br/> 

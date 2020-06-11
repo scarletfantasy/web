@@ -31,9 +31,7 @@ public class successHandler implements AuthenticationSuccessHandler {
         if(authorities.contains(new SimpleGrantedAuthority("BAN")))
         {
 
-            response.setContentType("application/json;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Credentials","true");
-            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
             response.getWriter().write("2");
 
         }
@@ -42,9 +40,7 @@ public class successHandler implements AuthenticationSuccessHandler {
             HttpSession session=request.getSession();
 
             session.setAttribute("id",id);
-            response.setContentType("application/json;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Credentials","true");
-            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
             response.getWriter().write("1");
         }
 

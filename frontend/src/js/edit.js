@@ -35,7 +35,7 @@ class Introduction extends Component{
         var isbn=this.props.isbn;
         this.setState({isbn:isbn});
         $.ajax({
-            url: "http://localhost:8080/getdetail",
+            url: "http://101.132.98.60:12346/getdetail",
             type:"POST",
             params:{"contentType": "application/json;charset=utf-8"},
             data:{isbn:isbn},
@@ -60,7 +60,7 @@ class Introduction extends Component{
         var isbn=nextprop.isbn;
         this.setState({isbn:isbn});
         $.ajax({
-            url: "http://localhost:8080/getdetail",
+            url: "http://101.132.98.60:12346/getdetail",
             type:"POST",
             params:{"contentType": "application/json;charset=utf-8"},
             data:{isbn:isbn},
@@ -89,7 +89,7 @@ class Introduction extends Component{
         var isbn=this.state.isbn;
         var introduction=this.state.introduction;
         $.ajax({
-            url: "http://localhost:8080/jpaintroduction",
+            url: "http://101.132.98.60:12346/jpaintroduction",
             type: "POST",
             params: {
                 "contentType": "application/json;charset=utf-8"
@@ -165,7 +165,7 @@ class Edit extends Component {
     }
     reload() {
         $.ajax({
-            url: "http://localhost:8080/jpabooklist",
+            url: "http://101.132.98.60:12346/jpabooklist",
             type: "GET",
             params: {
                 "contentType": "application/json;charset=utf-8"
@@ -188,7 +188,7 @@ class Edit extends Component {
         var i = e.target.id;
         var isbn = this.state.book[i].isbn
         $.ajax({
-            url: "http://localhost:8080/jpaeditdelete",
+            url: "http://101.132.98.60:12346/jpaeditdelete",
             type: "GET",
             xhrFields: {
                 withCredentials: true
@@ -233,7 +233,7 @@ class Edit extends Component {
             console.log(book.isbn);
         
             $.ajax({
-                url:"http://localhost:8080/uploadimg",
+                url:"http://101.132.98.60:12346/uploadimg",
                 type:"POST",
                 data:formdata,
                 processData:false,
@@ -249,7 +249,7 @@ class Edit extends Component {
         }
         
         $.ajax({
-            url: "http://localhost:8080/jpaeditsave",
+            url: "http://101.132.98.60:12346/jpaeditsave",
             type: "GET",
             
             
@@ -316,7 +316,7 @@ class Edit extends Component {
                     <TableCell > 
                         < Input id = { i + ".number"} value = {book[i].number } onChange = { this.handlechange}/>
                     </TableCell >
-                    <TableCell > < img id = "skimimg" src={"http://localhost:8080/findimg/"+book[i].isbn}/>
+                    <TableCell > < img id = "skimimg" src={"http://101.132.98.60:12346/findimg/"+book[i].isbn}/>
                     </TableCell >
                     < TableCell > 
                     < Input id = {i + ".price"}value = {book[i].price } onChange = {this.handlechange}/>

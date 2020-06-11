@@ -25,7 +25,7 @@ class Direct extends Component
       
       this.logout=this.logout.bind(this);
       $.ajax({
-        url: "http://localhost:8080/jpacurrentuser",
+        url: "http://101.132.98.60:12346/jpacurrentuser",
         type:"POST",
         params:{"contentType": "application/json;charset=utf-8"},
         xhrFields: {
@@ -41,7 +41,7 @@ class Direct extends Component
     componentWillReceiveProps(nextprop)
     {
       $.ajax({
-        url: "http://localhost:8080/jpacurrentuser",
+        url: "http://101.132.98.60:12346/jpacurrentuser",
         type:"POST",
         params:{"contentType": "application/json;charset=utf-8"},
         xhrFields: {
@@ -70,7 +70,7 @@ class Direct extends Component
     {
       this.setState({user:{id:" "}});
       $.ajax({
-        url: "http://localhost:8080/logout",
+        url: "http://101.132.98.60:12346/logout",
         type:"POST",
         xhrFields: {
           withCredentials: true

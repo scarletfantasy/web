@@ -53,7 +53,7 @@ class Register extends Component
         }
         else{
             $.ajax({
-                url: "http://localhost:8080/jparegister",
+                url: "http://101.132.98.60:12346/jparegister",
                 type:"POST",
                 params:{"contentType": "application/json;charset=utf-8"},
                 xhrFields: {

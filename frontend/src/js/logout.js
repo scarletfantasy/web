@@ -25,7 +25,7 @@ class Logout extends Component
 componentWillMount()
 {
     $.ajax({
-        url: "http://localhost:8080/logout",
+        url: "http://101.132.98.60:12346/logout",
         type:"POST",
         xhrFields: {
             withCredentials: true

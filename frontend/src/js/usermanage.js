@@ -32,7 +32,7 @@ class Usermanage extends Component
     reload()
     {
         $.ajax({
-            url:"http://localhost:8080/jpashowuser",
+            url:"http://101.132.98.60:12346/jpashowuser",
             type:"GET",
               params:{"contentType": "application/json;charset=utf-8"},
               xhrFields: {
@@ -61,7 +61,7 @@ class Usermanage extends Component
         
         
         $.ajax({
-            url:"http://localhost:8080/jpauseredit",
+            url:"http://101.132.98.60:12346/jpauseredit",
             type:"GET",
             params:{"contentType": "application/json;charset=utf-8"},
             xhrFields: {

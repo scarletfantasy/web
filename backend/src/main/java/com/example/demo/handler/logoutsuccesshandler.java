@@ -13,9 +13,7 @@ public class logoutsuccesshandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
 
         response.getWriter().write("1");
     }

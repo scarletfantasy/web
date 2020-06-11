@@ -39,8 +39,7 @@ public class UserController {
         String lpassword=request.getParameter("password");
         HttpSession session=request.getSession();
 
-        response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
         List<User> alluser=userdao.getalluser();
         System.out.println(lid);
         System.out.println(lpassword);
@@ -84,24 +83,21 @@ public class UserController {
     @RequestMapping(value = "/jpalogout")
     public Object logout(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
-        response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
         session.removeAttribute("id");
         return "success";
     }
     @RequestMapping(value = "/jpashowuser")
     public Object showalluser(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
-        response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
 
         return userdao.getalluser();
     }
     @RequestMapping(value = "/jpauseredit")
     public Object useredit(HttpServletResponse response, HttpServletRequest request, HttpSession session)
     {
-        response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
         String json=request.getParameter("user");
         JSONObject jsonobeject= JSON.parseObject(json);
         String id=jsonobeject.getString("id");

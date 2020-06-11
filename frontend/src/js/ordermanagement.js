@@ -24,12 +24,13 @@ import  'echarts/lib/chart/bar';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
+import Checkbox from "@material-ui/core/Checkbox";
 class Ordermanagement extends Component
 {
     constructor(props)
     {
         super(props);
-        this.state={user:" ",cart:[],from:"2000-01-01",to:"2099-12-31",book:"",userid:"",show:1}
+        this.state={user:" ",cart:[],from:"2000-01-01",to:"2099-12-31",book:"",userid:"",show:1,checked:false}
         this.handlechange=this.handlechange.bind(this)
         this.handlefrom=this.handlefrom.bind(this)
         this.handleto=this.handleto.bind(this)
@@ -37,25 +38,25 @@ class Ordermanagement extends Component
         this.handlebook=this.handlebook.bind(this)
         this.changeshow=this.changeshow.bind(this)
         $.ajax({
-            url: "http://localhost:8080/jpacurrentuser",
+            url: "http://101.132.98.60:12346/jpacurrentuser",
             type:"POST",
             params:{"contentType": "application/json;charset=utf-8"},
             xhrFields: {
               withCredentials: true
           },
             success: function f(data) {
-              
+
               this.setState({user:data});
-              
+
             }.bind(this)
           })
     }
     componentDidUpdate()
     {
-        
+
         if(this.state.user=="admin"&&this.state.show==0)
         {
-            
+
             var myChart = echarts.init(document.getElementById('chart'));
             var cart=this.state.cart;
             var books=new Map();
@@ -68,11 +69,11 @@ class Ordermanagement extends Component
             var users=new Map();
             for(var i=0;i<cart.length;++i)
             {
-                
+
                 var time=new Date(cart[i].time)
                 if(ftime<time&&time<ttime&&(book==""||cart[i].isbn.search(book)!=-1)&&(userid==""||cart[i].userid.search(userid)!=-1))
                 {
-                    
+
                     if(books.get(cart[i].isbn)!=null)
                     {
                         books.set(cart[i].isbn,books.get(cart[i].isbn)+cart[i].number)
@@ -81,7 +82,7 @@ class Ordermanagement extends Component
                         books.set(cart[i].isbn,cart[i].number)
                     }
                 }
-                
+
             }
             myChart.setOption({
                 title: { text: '各书籍销量展示' },
@@ -99,11 +100,11 @@ class Ordermanagement extends Component
             var myChart1 = echarts.init(document.getElementById('user'));
             for(var i=0;i<cart.length;++i)
             {
-                
+
                 var time=new Date(cart[i].time)
                 if(ftime<time&&time<ttime&&(book==""||cart[i].isbn.search(book)!=-1)&&(userid==""||cart[i].userid.search(userid)!=-1))
                 {
-                    
+
                     if(users.get(cart[i].userid)!=null)
                     {
                         users.set(cart[i].userid,users.get(cart[i].userid)+cart[i].number*cart[i].price)
@@ -111,9 +112,9 @@ class Ordermanagement extends Component
                     else{
                         users.set(cart[i].userid,cart[i].number*cart[i].price)
                     }
-                    
+
                 }
-                
+
             }
             for (var key of users.keys()) {
                 users.set(key,users.get(key).toFixed(2))
@@ -133,17 +134,18 @@ class Ordermanagement extends Component
             });
         }
     }
-        
-    
+
+
     changeshow()
     {
         var show=this.state.show;
-        
+        var checked=this.state.checked;
         show=(show==1)?0:1;
-        this.setState({show:show})
+        checked=(checked==1)?0:1;
+        this.setState({show:show,checked:checked})
         console.log(show)
-        
-        
+
+
     }
     handlefrom(e)
     {
@@ -165,7 +167,7 @@ class Ordermanagement extends Component
     componentDidMount()
     {
         $.ajax({
-            url:"http://localhost:8080/jpashowhistory",
+            url:"http://101.132.98.60:12346/jpashowhistory",
             type:"GET",
             xhrFields: {
                 withCredentials: true
@@ -181,8 +183,8 @@ class Ordermanagement extends Component
                     this.setState({cart:data});
                 console.log(data);
                 }
-                  
-                
+
+
               }.bind(this)
           })
     }
@@ -217,6 +219,7 @@ class Ordermanagement extends Component
         var cost=0;
         var userid=this.state.userid;
         var book=this.state.book;
+        var checked=this.state.checked;
         for(var i=0;i<tmp.length;++i)
         {
             var time=new Date(tmp[i].time)
@@ -244,13 +247,13 @@ class Ordermanagement extends Component
                         </TableRow>
                     )
                 }
-                
+
                 ++count;
                 bookcount=bookcount+tmp[i].number
                 cost=cost+tmp[i].number*tmp[i].price
             }
-            
-            
+
+
         }
         cost = cost.toFixed(2);
         if(this.state.user!="admin")
@@ -259,6 +262,7 @@ class Ordermanagement extends Component
                 <div>
                     <Paper id="select">
                         <div>
+
                             <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="from">from</InputLabel>
                             <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
@@ -267,8 +271,8 @@ class Ordermanagement extends Component
                             <InputLabel htmlFor="to">to</InputLabel>
                             <Input value={this.state.to} onChange={this.handleto}>to</Input>
                             </FormControl>
-                            <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
-                        </div>               
+                            <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
+                        </div>
                         <Table>
                             <TableHead>
                                 <TableCell>id</TableCell>
@@ -288,7 +292,7 @@ class Ordermanagement extends Component
                 return(
                     <div>
                         <Paper id="select">
-                            <div>                   
+                            <div>
                                 <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="from">from</InputLabel>
                                 <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
@@ -305,9 +309,15 @@ class Ordermanagement extends Component
                                 <InputLabel htmlFor="to">userid</InputLabel>
                                 <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
                                 </FormControl>
-                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
+                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
                             </div>
-                            <Button onClick={this.changeshow}>changeshow</Button>
+                            <Button >开启表格</Button>
+                            <Checkbox
+                                checked={checked}
+                                onChange={this.changeshow}
+                                inputProps={{ 'aria-label': 'primary checkbox' }}
+
+                            />
                             <Table>
                                 <TableHead>
                                     <TableCell>id</TableCell>
@@ -318,7 +328,7 @@ class Ordermanagement extends Component
                                 </TableHead>
                                 {item}
                             </Table>
-                        </Paper>                
+                        </Paper>
                     </div>
                     )
             }
@@ -326,7 +336,7 @@ class Ordermanagement extends Component
                 return(
                     <div>
                         <Paper id="select">
-                            <div>                   
+                            <div>
                                 <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="from">from</InputLabel>
                                 <Input value={this.state.from} onChange={this.handlefrom}>from</Input>
@@ -343,18 +353,24 @@ class Ordermanagement extends Component
                                 <InputLabel htmlFor="to">userid</InputLabel>
                                 <Input value={this.state.userid} onChange={this.handleuser}>userid</Input>
                                 </FormControl>
-                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>                   
+                                <h3>订单总数：{count}  购书总数：{bookcount}本  总花费：{cost}</h3>
                             </div>
-                            <Button onClick={this.changeshow}>changeshow</Button>
+                            <Button >开启表格</Button>
+                            <Checkbox
+                                checked={checked}
+                                onChange={this.changeshow}
+                                inputProps={{ 'aria-label': 'primary checkbox' }}
+
+                            />
                             <div id="chart" style={{ width: 400, height: 400 }}></div>
                             <div id="user" style={{ width: 400, height: 400 ,float:"left"}}></div>
-                        </Paper>                
+                        </Paper>
                     </div>
                     )
             }
-            
+
         }
-        
+
     }
 }
 export default Ordermanagement;

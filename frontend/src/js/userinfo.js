@@ -30,7 +30,7 @@ class Userinfo extends Component {
       
         
         $.ajax({
-            url: "http://localhost:8080/jpacurrentuser",
+            url: "http://101.132.98.60:12346/jpacurrentuser",
             type:"POST",
             params:{"contentType": "application/json;charset=utf-8"},
             xhrFields: {
@@ -53,7 +53,7 @@ class Userinfo extends Component {
         formdata.append("id",this.state.user.id);
         formdata.append("houzhui",$(id)[0].value.split(".")[1])
         $.ajax({
-            url: "http://localhost:8080/uploaduserimg",
+            url: "http://101.132.98.60:12346/uploaduserimg",
             type:"POST",
                 data:formdata,
                 processData:false,

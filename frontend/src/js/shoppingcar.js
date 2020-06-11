@@ -30,7 +30,7 @@ class Shoppingcar extends Component
     reload()
     {
         $.ajax({
-            url:"http://localhost:8080/jpashowcart",
+            url:"http://101.132.98.60:12346/jpashowcart",
             type:"GET",
             xhrFields: {
                 withCredentials: true
@@ -60,7 +60,7 @@ class Shoppingcar extends Component
         var id=order.id
         console.log(id)
         $.ajax({
-            url:"http://localhost:8080/jpadeleteorder",
+            url:"http://101.132.98.60:12346/jpadeleteorder",
             type:"POST",
             xhrFields: {
                 withCredentials: true
@@ -84,7 +84,7 @@ class Shoppingcar extends Component
     {
         
         $.ajax({
-            url:"http://localhost:8080/jpacleancart",
+            url:"http://101.132.98.60:12346/jpacleancart",
             type:"POST",
             xhrFields: {
                 withCredentials: true
