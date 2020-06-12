@@ -22,8 +22,9 @@ class Direct extends Component
       var arr=new Array();
       super(props);
       this.state={user:{id:" "},anchorEl: null};
-      
+
       this.logout=this.logout.bind(this);
+
       $.ajax({
         url: "http://101.132.98.60:12346/jpacurrentuser",
         type:"POST",
@@ -32,12 +33,13 @@ class Direct extends Component
           withCredentials: true
       },
         success: function f(data) {
-          
+
           this.setState({user:{id:data}});
 
         }.bind(this)
       })
     }
+
     componentWillReceiveProps(nextprop)
     {
       $.ajax({
@@ -48,24 +50,24 @@ class Direct extends Component
           withCredentials: true
       },
         success: function f(data) {
-          
+
           this.setState({user:{id:data}});
 
         }.bind(this)
       })
-      
-      
-      
-      
+
+
+
+
     }
     handleClick = event => {
       this.setState({ anchorEl: event.currentTarget });
     };
-  
+
     handleClose = () => {
       this.setState({ anchorEl: null });
   };
-    
+
     logout()
     {
       this.setState({user:{id:" "}});
@@ -76,7 +78,7 @@ class Direct extends Component
           withCredentials: true
       },
         params:{"contentType": "application/json;charset=utf-8"},
-        
+
         success: function f(data) {
             alert("success");
 
@@ -85,18 +87,18 @@ class Direct extends Component
     }
     render()
     {
-      
+
       var user=this.state.user;
       var shoppingcar=this.state.shoppingcar;
       const  anchorEl  = this.state.anchorEl;
      if(user.id=="admin")
      {
       return(
-            
-            
-            
+
+
+
         <div id="alldirect">
-        <AppBar id="alldirect">            
+        <AppBar id="alldirect">
         <div>
           <div id="direct1">
           <img id="icon" src="img/skim.png"></img>
@@ -124,8 +126,8 @@ class Direct extends Component
           </div>
           <div id="direct1">
           <img id="icon" src="img/guest.png"></img>
-          <div id="direct">{user.id}</div> 
-          </div>        
+          <div id="direct">{user.id}</div>
+          </div>
           <div id="direct1">
             <Button id="directbutton"
               aria-owns={anchorEl ? 'simple-menu' : undefined}
@@ -146,22 +148,22 @@ class Direct extends Component
               <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/userinfo'}}>information</Link></MenuItem>
             </Menu>
           </div>
-          
+
         </div>
-        
+
         </AppBar>
         </div>
-        
+
     )
     }
     else
     {
       return(
-            
-            
-            
+
+
+
         <div id="alldirect">
-        <AppBar id="alldirect">            
+        <AppBar id="alldirect">
         <div>
           <div id="direct1">
           <img id="icon" src="img/skim.png"></img>
@@ -175,17 +177,17 @@ class Direct extends Component
           <img id="icon" src="img/cart.png"></img>
           <Link id="direct" to={{pathname:'/shoppingcar'}}>cart</Link>
           </div>
-          
-          
+
+
           <div id="direct1">
           <img id="icon" src="img/order.png"></img>
           <Link id="direct" to={{pathname:'/ordermanagement',}}>order</Link>
           </div>
-          
+
           <div id="direct1">
           <img id="icon" src="img/guest.png"></img>
-          <div id="direct">{user.id}</div> 
-          </div>        
+          <div id="direct">{user.id}</div>
+          </div>
           <div id="direct1">
             <Button id="directbutton"
               aria-owns={anchorEl ? 'simple-menu' : undefined}
@@ -206,16 +208,16 @@ class Direct extends Component
               <MenuItem onClick={this.handleClose}><Link id="slink" to={{pathname:'/userinfo'}}>information</Link></MenuItem>
             </Menu>
           </div>
-          
+
         </div>
-        
+
         </AppBar>
         </div>
-        
+
     )
     }
 
-     
+
     }
 }
 export default withRouter(Direct);

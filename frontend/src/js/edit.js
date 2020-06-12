@@ -22,13 +22,13 @@ import '../css/edit.css'
 class Introduction extends Component{
     constructor(props){
         super(props);
-        
+
         this.state={isbn:"",introduction:" "};
-        
+
         this.handlechange=this.handlechange.bind(this);
         this.handlesave=this.handlesave.bind(this);
-        
-        
+
+
     }
     componentWillMount()
     {
@@ -50,8 +50,8 @@ class Introduction extends Component{
               else{
                 this.setState({introduction:" "});
               }
-              
-    
+
+
             }.bind(this)
           })
     }
@@ -75,8 +75,8 @@ class Introduction extends Component{
               else{
                 this.setState({introduction:" "});
               }
-              
-    
+
+
             }.bind(this)
           })
     }
@@ -110,8 +110,8 @@ class Introduction extends Component{
     }
     render()
     {
-        
-        
+
+
         return(
             <div>
                 <Paper>
@@ -173,7 +173,7 @@ class Edit extends Component {
             xhrFields: {
                 withCredentials: true
             },
-            
+
             success: function f(data) {
 
                 this.setState({
@@ -215,13 +215,13 @@ class Edit extends Component {
         var book = this.state.book[i];
         var tmp = JSON.stringify(book);
         var id="#"+i+"img"
-        
+
         var formdata=new FormData();
-        
-        
+
+
         var filedata=$(id)[0].files[0]
         console.log(filedata)
-        if(filedata!=undefined&&filedata.size>100000)
+        if(filedata!=undefined&&filedata.size>10000000)
         {
             alert("the file is too big")
         }
@@ -231,7 +231,7 @@ class Edit extends Component {
             formdata.append("isbn",book.isbn);
             formdata.append("houzhui",$(id)[0].value.split(".")[1])
             console.log(book.isbn);
-        
+
             $.ajax({
                 url:"http://101.132.98.60:12346/uploadimg",
                 type:"POST",
@@ -247,12 +247,12 @@ class Edit extends Component {
                 }
             })
         }
-        
+
         $.ajax({
             url: "http://101.132.98.60:12346/jpaeditsave",
             type: "GET",
-            
-            
+
+
             xhrFields: {
                 withCredentials: true
             },
@@ -266,8 +266,8 @@ class Edit extends Component {
 
             }
         })
-        
-        
+
+
 
     }
     handlechange(e) {
@@ -305,26 +305,26 @@ class Edit extends Component {
         var item = [];
         for (var i = 0; i < book.length; ++i) {
             if (searchname == "" || book[i].bookname.search(searchname) != -1) {
-                item.push( 
+                item.push(
                 < TableRow >
-                    < TableCell > 
+                    < TableCell >
                         < Input id = {i + ".bookname"}value = {book[i].bookname} onChange = {this.handlechange}/>
                     </TableCell >
-                    <TableCell > 
+                    <TableCell >
                         < Input id = { i + ".isbn"} value = {book[i].isbn} onChange = {this.handlechange }/>
                     </TableCell >
-                    <TableCell > 
+                    <TableCell >
                         < Input id = { i + ".number"} value = {book[i].number } onChange = { this.handlechange}/>
                     </TableCell >
                     <TableCell > < img id = "skimimg" src={"http://101.132.98.60:12346/findimg/"+book[i].isbn}/>
                     </TableCell >
-                    < TableCell > 
+                    < TableCell >
                     < Input id = {i + ".price"}value = {book[i].price } onChange = {this.handlechange}/>
                     </TableCell >
-                    <TableCell > 
+                    <TableCell >
                     <input type="file" id = {i+"img"} name={i+"img"}></input>
                     </TableCell >
-                    <TableCell > 
+                    <TableCell >
                     <button id={i}onClick={this.showintroduction}>detail</button>
                     </TableCell >
                     < TableCell > < button id = { i}onClick = { this.handlesave} > save </button>
@@ -338,26 +338,26 @@ class Edit extends Component {
             }
             var mainpart=[];
             mainpart.push(
-                <div id = "skimpage">                
+                <div id = "skimpage">
                 <Paper>
-                
-                <Input value = {this.state.searchname} onChange = { this.searchchange } > </Input> 
+
+                <Input value = {this.state.searchname} onChange = { this.searchchange } > </Input>
                 <br/>
-                <Button onClick = { this.newbook} > new </Button> 
+                <Button onClick = { this.newbook} > new </Button>
                 <Table >
-                
+
                 <TableHead >
-                <TableCell > bookname </TableCell> 
-                <TableCell > isbn </TableCell> 
-                <TableCell > number </TableCell> 
-                <TableCell > img </TableCell> 
-                <TableCell > price </TableCell> 
+                <TableCell > bookname </TableCell>
+                <TableCell > isbn </TableCell>
+                <TableCell > number </TableCell>
+                <TableCell > img </TableCell>
+                <TableCell > price </TableCell>
                 <TableCell>upload</TableCell>
                 <TableCell>introduction</TableCell>
-                <TableCell > save </TableCell> 
-                <TableCell > delete </TableCell> 
-                </TableHead> 
-                {item} 
+                <TableCell > save </TableCell>
+                <TableCell > delete </TableCell>
+                </TableHead>
+                {item}
                 </Table>
                 </Paper >
                 </div>
@@ -370,9 +370,9 @@ class Edit extends Component {
                     </div>
                     )
             }
-            
-            return ( 
-                
+
+            return (
+
                 <div>
                 {mainpart}
                 </div>

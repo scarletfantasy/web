@@ -27,8 +27,8 @@ class Userinfo extends Component {
     constructor(props) {
         super(props);
         this.state={user:{id:" "}};
-      
-        
+
+
         $.ajax({
             url: "http://101.132.98.60:12346/jpacurrentuser",
             type:"POST",
@@ -37,7 +37,7 @@ class Userinfo extends Component {
             withCredentials: true
         },
             success: function f(data) {
-            
+
             this.setState({user:{id:data}});
 
             }.bind(this)
@@ -72,7 +72,7 @@ class Userinfo extends Component {
         return(
             <div id="userinforoot">
             <Paper>
-            <img id="userimage" src={"finduserimg/"+this.state.user.id} />
+            <img id="userimage" src={"http://101.132.98.60:12346/finduserimg/"+this.state.user.id} />
             <br/>
             <input type="file" id = "userimg" name="userimg"></input>
             <br/>

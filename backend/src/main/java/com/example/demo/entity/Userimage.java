@@ -4,12 +4,14 @@ import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import javax.persistence.Lob;
+
 @Document(collection = "userimage")
 public class Userimage {
     @Id
     private String userid;
 
-
+    @Lob
     private Binary content;
 
     public void setContent(Binary content) {
